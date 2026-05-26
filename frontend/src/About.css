@@ -1,0 +1,139 @@
+.about-section {
+  position: relative;
+  margin-top: -30px;
+  padding: 3.5rem 0 6rem;
+  background:
+    linear-gradient(180deg, rgba(255, 90, 10, 0.04) 0%, rgba(0, 0, 0, 0.92) 18%),
+    #040404;
+}
+
+.about-shell {
+  width: min(1240px, 92%);
+  margin: 0 auto;
+  border: 1px solid #1f1f1f;
+  background: #0b0b0b;
+  padding: 2rem;
+}
+
+.about-head {
+  position: relative;
+  max-width: 760px;
+}
+
+.about-tag {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #3a3a3a;
+  color: #ff5a0a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.about-ball {
+  position: absolute;
+  top: 4px;
+  right: -12px;
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  filter: drop-shadow(0 0 10px rgba(255, 90, 10, 0.3));
+}
+
+.about-ball.is-visible {
+  opacity: 1;
+}
+
+.about-head h2 {
+  margin: 1rem 0 0;
+  color: #fff;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  line-height: 1.2;
+}
+
+.about-name {
+  position: relative;
+  display: inline-block;
+  margin: 0.55rem 0 0;
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.about-name-y {
+  color: #ff5a0a;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.about-name-y.is-visible {
+  opacity: 1;
+}
+
+.about-title {
+  margin: 0.7rem 0 0;
+  color: #fff;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.about-inline-s {
+  color: #ff5a0a;
+  font-size: 1.2em;
+  font-weight: 800;
+  transition: opacity 0.2s ease;
+}
+
+.about-inline-s.is-hidden {
+  opacity: 0;
+}
+
+.about-copy {
+  margin: 1rem 0 0;
+  color: #c8c8c8;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.about-grid {
+  margin-top: 1.8rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-card {
+  border: 1px solid #2a2a2a;
+  background: linear-gradient(160deg, #101010, #0a0a0a);
+  padding: 1.1rem;
+}
+
+.about-card span {
+  color: #ff5a0a;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.about-card p {
+  margin: 0.6rem 0 0;
+  color: #d8d8d8;
+  line-height: 1.55;
+  font-size: 0.94rem;
+}
+
+@media (max-width: 980px) {
+  .about-shell {
+    padding: 1.25rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}
