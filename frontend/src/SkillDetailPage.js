@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaCode, FaDatabase, FaServer, FaTools, FaCloudUploadAlt, FaNodeJs, FaKey } from 'react-icons/fa';
 import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaBootstrap } from 'react-icons/fa';
@@ -223,6 +224,7 @@ const menu = [
 
 function SkillDetailPage() {
   const { track } = useParams();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const data = tracks[track] || tracks.frontend;
   const Icon = data.icon;
   const isFrontend = track === 'frontend' || !track;
@@ -231,23 +233,49 @@ function SkillDetailPage() {
   const isTools = track === 'tools';
   const isOthers = track === 'others';
 
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [track]);
+
   return (
     <div className="skill-page">
       <aside className="skill-sidebar">
-        <h3>Skills</h3>
-        {menu.map(([slug, label, MenuIcon]) => (
-          <NavLink key={slug} to={`/skills/${slug}`} className={({ isActive }) => `side-link ${isActive ? 'active' : ''}`}>
-            <span className="side-link-left">
-              <MenuIcon />
-              {label}
-            </span>
-            <HiOutlineChevronRight />
-          </NavLink>
-        ))}
+        <div className="skill-sidebar-head">
+          <h3>Skills</h3>
+          <button
+            type="button"
+            className={`sidebar-toggle ${isSidebarOpen ? 'is-open' : ''}`}
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            aria-label="Toggle skills menu"
+            aria-expanded={isSidebarOpen}
+            aria-controls="skills-side-menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+        <div id="skills-side-menu" className={`skill-sidebar-menu ${isSidebarOpen ? 'is-open' : ''}`}>
+          {menu.map(([slug, label, MenuIcon]) => (
+            <NavLink key={slug} to={`/skills/${slug}`} className={({ isActive }) => `side-link ${isActive ? 'active' : ''}`}>
+              <span className="side-link-left">
+                <MenuIcon />
+                {label}
+              </span>
+              <HiOutlineChevronRight />
+            </NavLink>
+          ))}
+        </div>
       </aside>
 
       <main className="skill-main">
-        <Link to="/" className="back-btn">
+        <Link
+          to="/"
+          className="back-btn"
+          onClick={() => {
+            sessionStorage.setItem('scrollTarget', 'skills');
+          }}
+        >
           <FaArrowLeft /> Back to Skills
         </Link>
         <section className="skill-head">

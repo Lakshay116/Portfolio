@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
-
 :root {
   --bg: #070707;
   --bg-soft: #111111;
@@ -18,10 +16,35 @@ body {
 }
 
 .landing-root {
+  position: relative;
   min-height: 100svh;
   color: var(--text);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: radial-gradient(circle at 78% 35%, #121212 0%, #030303 56%);
+}
+
+.cursor-orange-glow {
+  position: fixed;
+  z-index: 1;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  background: radial-gradient(
+    circle,
+    rgba(255, 106, 22, 0.22) 0%,
+    rgba(255, 106, 22, 0.12) 34%,
+    rgba(255, 106, 22, 0.02) 70%,
+    transparent 100%
+  );
+  filter: blur(8px);
+}
+
+.cursor-orange-glow.is-active {
+  opacity: 1;
 }
 
 .scroll-line {
@@ -79,7 +102,12 @@ body {
   right: -10px;
   width: 22px;
   height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  display: block;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
+  border-radius: 50%;
   transition: opacity 0.18s ease;
   z-index: 2;
 }
@@ -102,12 +130,17 @@ body {
 
 .hire-btn {
   margin-right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   padding: 0.74rem 1.05rem;
   color: #fff;
   background: var(--accent);
+  font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   border-radius: 4px;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -172,18 +205,30 @@ body {
 
 .btn-main,
 .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 134px;
   padding: 0.84rem 1rem;
   border-radius: 5px;
   font-size: 0.83rem;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
 }
 
 .btn-main {
   border: none;
   color: #fff;
-  background: var(--accent);
+  background: linear-gradient(135deg, #ff5a0a 0%, #ff7b1f 48%, #ff9d3a 100%);
+  box-shadow: 0 10px 26px rgba(255, 90, 10, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(255, 90, 10, 0.45);
+  filter: saturate(1.08);
 }
 
 .btn-outline {
@@ -219,8 +264,8 @@ body {
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(circle at 56% 43%, rgba(255, 255, 255, 0.2), transparent 20%),
-    radial-gradient(circle at 57% 55%, rgba(255, 90, 10, 0.11), transparent 26%);
+    radial-gradient(circle at 56% 43%, rgba(255, 255, 255, 0.12), transparent 22%),
+    radial-gradient(circle at 57% 55%, rgba(255, 90, 10, 0.07), transparent 28%);
 }
 
 .shape {
@@ -291,17 +336,55 @@ body {
   pointer-events: none;
 }
 
+.flying-m {
+  position: fixed;
+  z-index: 120;
+  color: var(--accent);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.flying-p {
+  position: fixed;
+  z-index: 120;
+  color: var(--accent);
+  font-size: 2rem;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.flying-projects-m {
+  position: fixed;
+  z-index: 120;
+  color: var(--accent);
+  font-size: 1.35rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
 .flying-ball {
   position: fixed;
   z-index: 130;
   width: 34px;
   height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  display: block;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
+  border-radius: 50%;
   pointer-events: none;
   filter: drop-shadow(0 0 14px rgba(255, 90, 10, 0.45));
 }
 
 @media (max-width: 980px) {
+  .cursor-orange-glow {
+    display: none;
+  }
+
   .menu {
     display: none;
   }

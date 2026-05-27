@@ -40,6 +40,12 @@
   right: -12px;
   width: 28px;
   height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  display: block;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s ease;
   filter: drop-shadow(0 0 10px rgba(255, 90, 10, 0.3));

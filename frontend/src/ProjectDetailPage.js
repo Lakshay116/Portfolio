@@ -142,8 +142,7 @@ function ProjectDetailPage() {
     <div className="project-detail-page">
       <div className="pd-shell">
         <aside className="pd-left">
-          <Link to="/" className="pd-back"><FaArrowLeft /> Back to Projects</Link>
-          <span className="pd-badge">Featured Project</span>
+          <Link to="/#projects" className="pd-back"><FaArrowLeft /> Back to Projects</Link>
           <h1>{data.name}</h1>
           <p className="pd-sub">{data.subtitle}</p>
 

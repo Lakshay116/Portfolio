@@ -1,9 +1,19 @@
 import { useState } from 'react';
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaPaperPlane, FaLinkedinIn, FaGithub, FaInstagram } from 'react-icons/fa';
+import { SiLeetcode } from 'react-icons/si';
 import { sendMailSMTP } from './mail';
 import './ContactFooter.css';
 
-function ContactFooter({ contactBallRef, contactBallReady, contactKRef, footerBallTargetRef }) {
+function ContactFooter({
+  contactBallRef,
+  contactBallReady,
+  contactKRef,
+  contactMsgMRef,
+  contactMsgMReady,
+  footerBallTargetRef,
+  mobileFooterBallTargetRef,
+  quickLinksColRef,
+}) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -88,9 +98,11 @@ function ContactFooter({ contactBallRef, contactBallReady, contactKRef, footerBa
                 <div>
                   <p>Connect</p>
                   <span className="contact-socials">
-                    <a href="#linkedin"><FaLinkedinIn /></a>
-                    <a href="#github"><FaGithub /></a>
-                    <a href="#instagram"><FaInstagram /></a>
+                    <a href="https://www.linkedin.com/in/lakshayjangra394/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                    <a href="https://github.com/Lakshay116" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+                    <a href="https://www.instagram.com/lakshay_611/" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                    <a href="https://www.hackerrank.com/profile/jangralakshay611" target="_blank" rel="noopener noreferrer"><span className="hackerrank-text">HR</span></a>
+                    <a href="https://leetcode.com/u/3qxtnuXtTo/" target="_blank" rel="noopener noreferrer"><SiLeetcode /></a>
                   </span>
                 </div>
               </div>
@@ -98,7 +110,9 @@ function ContactFooter({ contactBallRef, contactBallReady, contactKRef, footerBa
           </article>
 
           <article className="contact-right">
-            <h3><FaPaperPlane /> Send Me a Message</h3>
+            <h3>
+              <FaPaperPlane /> Send Me a <span><span ref={contactMsgMRef} className={`contact-msg-m ${contactMsgMReady ? 'is-visible' : ''}`}>M</span>essage</span>
+            </h3>
             <form onSubmit={onSubmit}>
               <div className="form-row">
                 <input
@@ -148,14 +162,17 @@ function ContactFooter({ contactBallRef, contactBallReady, contactKRef, footerBa
               <h4>&lt;/&gt; Lakshay</h4>
               <p>I build performant, scalable and user-friendly web applications with modern technologies.</p>
               <div className="footer-socials">
-                <a href="#linkedin"><FaLinkedinIn /></a>
-                <a href="#github"><FaGithub /></a>
-                <a href="#instagram"><FaInstagram /></a>
+                <a href="https://www.linkedin.com/in/lakshayjangra394/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                <a href="https://github.com/Lakshay116" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+                <a href="https://www.instagram.com/lakshay_611/" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                <a href="https://www.hackerrank.com/profile/jangralakshay611" target="_blank" rel="noopener noreferrer"><span className="hackerrank-text">HR</span></a>
+                <a href="https://leetcode.com/u/3qxtnuXtTo/" target="_blank" rel="noopener noreferrer"><SiLeetcode /></a>
               </div>
             </div>
 
-            <div>
+            <div ref={quickLinksColRef} className="quick-links-col">
               <h5>Quick Links</h5>
+              <span ref={mobileFooterBallTargetRef} className="mobile-footer-ball-target" aria-hidden="true" />
               <a href="#home">Home</a>
               <a href="#about">About Me</a>
               <a href="#projects">Projects</a>
@@ -176,7 +193,6 @@ function ContactFooter({ contactBallRef, contactBallReady, contactKRef, footerBa
             <div>
               <h5>Let&apos;s Talk</h5>
               <p>Have a project in mind or want to collaborate? Feel free to reach out.</p>
-              <button type="button">Write Me</button>
             </div>
           </div>
 

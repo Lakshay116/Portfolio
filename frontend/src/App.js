@@ -17,14 +17,26 @@ function App() {
   const aboutBallRef = useRef(null);
   const aboutSRef = useRef(null);
   const skillsSRef = useRef(null);
+  const skillsMRef = useRef(null);
   const skillsBallRef = useRef(null);
+  const expMRef = useRef(null);
+  const expPRef = useRef(null);
   const expBallRef = useRef(null);
+  const projectsMRef = useRef(null);
+  const projectsPRef = useRef(null);
   const projectsBallRef = useRef(null);
   const contactBallRef = useRef(null);
   const contactKRef = useRef(null);
+  const contactMsgMRef = useRef(null);
   const footerBallTargetRef = useRef(null);
+  const mobileFooterBallTargetRef = useRef(null);
+  const quickLinksColRef = useRef(null);
   const [yFlight, setYFlight] = useState({ x: 0, y: 0, progress: 0 });
   const [sFlight, setSFlight] = useState({ x: 0, y: 0, progress: 0 });
+  const [mFlight, setMFlight] = useState({ x: 0, y: 0, progress: 0 });
+  const [pFlight, setPFlight] = useState({ x: 0, y: 0, progress: 0 });
+  const [projectsMFlight, setProjectsMFlight] = useState({ x: 0, y: 0, progress: 0 });
+  const [cursorGlow, setCursorGlow] = useState({ x: 0, y: 0, active: false });
   const [ballFlight, setBallFlight] = useState({ x: 0, y: 0, progress: 0, stage: 0 });
   const { scrollYProgress } = useScroll();
   const progressX = useSpring(scrollYProgress, {
@@ -37,6 +49,37 @@ function App() {
   const shapeRotate = useTransform(scrollYProgress, [0, 1], [0, 18]);
   const bridgeY = useTransform(scrollYProgress, [0, 0.55], [40, -60]);
   const bridgeOpacity = useTransform(scrollYProgress, [0.08, 0.55], [0.2, 1]);
+
+  useEffect(() => {
+    const pendingTarget = sessionStorage.getItem('scrollTarget');
+    const hashTarget = (window.location.hash || '').replace('#', '');
+    const targetId = pendingTarget || hashTarget;
+    if (!targetId) return;
+
+    const scrollToTarget = (attempt = 0) => {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (pendingTarget) {
+          sessionStorage.removeItem('scrollTarget');
+        }
+        return;
+      }
+      if (attempt < 20) {
+        window.setTimeout(() => scrollToTarget(attempt + 1), 50);
+      }
+    };
+
+    window.setTimeout(() => scrollToTarget(), 0);
+  }, []);
+
+  useEffect(() => {
+    const onMouseMove = (event) => {
+      setCursorGlow({ x: event.clientX, y: event.clientY, active: true });
+    };
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, []);
 
   useEffect(() => {
     const updateYFlight = () => {
@@ -86,7 +129,32 @@ function App() {
       setSFlight({ x, y, progress });
     };
 
+    const updateMFlight = () => {
+      if (!skillsSectionRef.current || !skillsMRef.current || !expMRef.current) return;
+
+      const skillsSectionRect = skillsSectionRef.current.getBoundingClientRect();
+      const sourceRect = skillsMRef.current.getBoundingClientRect();
+      const targetRect = expMRef.current.getBoundingClientRect();
+      const skillsSectionAbsY = skillsSectionRect.top + window.scrollY;
+      const targetAbsY = targetRect.top + window.scrollY;
+      const start = Math.max(skillsSectionAbsY, 0);
+      const end = Math.max(targetAbsY - window.innerHeight * 0.58, start + 1);
+      const raw = (window.scrollY - start) / (end - start);
+      const progress = Math.min(Math.max(raw, 0), 1);
+
+      const sourceX = sourceRect.left + sourceRect.width / 2;
+      const sourceY = sourceRect.top + sourceRect.height / 2;
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      const x = sourceX + (targetX - sourceX) * progress;
+      const y = sourceY + (targetY - sourceY) * progress;
+
+      setMFlight({ x, y, progress });
+    };
+
     const updateBallFlight = () => {
+      const isMobile = window.innerWidth <= 980;
       if (
         !landingBallRef.current ||
         !aboutBallRef.current ||
@@ -95,9 +163,10 @@ function App() {
         !projectsBallRef.current ||
         !contactBallRef.current ||
         !contactKRef.current ||
-        !footerBallTargetRef.current ||
         !aboutSectionRef.current
       ) return;
+      if (!isMobile && !footerBallTargetRef.current) return;
+      if (isMobile && !quickLinksColRef.current) return;
 
       const p0 = landingBallRef.current.getBoundingClientRect();
       const p1 = aboutBallRef.current.getBoundingClientRect();
@@ -106,24 +175,38 @@ function App() {
       const p4 = projectsBallRef.current.getBoundingClientRect();
       const p5 = contactBallRef.current.getBoundingClientRect();
       const p5k = contactKRef.current.getBoundingClientRect();
-      const pFooter = footerBallTargetRef.current.getBoundingClientRect();
+      const pFooter = footerBallTargetRef.current?.getBoundingClientRect();
+      const pMobileFooter = mobileFooterBallTargetRef.current?.getBoundingClientRect();
+      const pQuickLinks = quickLinksColRef.current?.getBoundingClientRect();
 
       const c0 = { x: p0.left + p0.width / 2, y: p0.top + p0.height / 2 + window.scrollY };
       const c1 = { x: p1.left + p1.width / 2, y: p1.top + p1.height / 2 + window.scrollY };
       const c2 = { x: p2.left + p2.width / 2, y: p2.top + p2.height / 2 + window.scrollY };
       const c3 = { x: p3.left + p3.width / 2, y: p3.top + p3.height / 2 + window.scrollY };
       const c4 = { x: p4.left + p4.width / 2, y: p4.top + p4.height / 2 + window.scrollY };
-      const c5 = {
-        x: pFooter.left + pFooter.width / 2,
-        y: pFooter.top + pFooter.height / 2 + window.scrollY,
-      };
+      const c5 = isMobile
+        ? (() => {
+            const fallbackX = pMobileFooter.left + pMobileFooter.width / 2;
+            const fallbackY = pMobileFooter.top + pMobileFooter.height / 2 + window.scrollY;
+            if (!pQuickLinks) return { x: fallbackX, y: fallbackY };
+            return {
+              x: pQuickLinks.left + pQuickLinks.width * 0.72,
+              y: pQuickLinks.top + pQuickLinks.height * 0.48 + window.scrollY,
+            };
+          })()
+        : {
+            x: pFooter.left + pFooter.width / 2,
+            y: pFooter.top + pFooter.height / 2 + window.scrollY,
+          };
 
       const a0 = p0.top + window.scrollY;
       const a1 = p1.top + window.scrollY;
       const a2 = p2.top + window.scrollY;
       const a3 = p3.top + window.scrollY;
       const a4 = p4.top + window.scrollY;
-      const a5 = pFooter.top + window.scrollY;
+      const a5 = isMobile
+        ? pMobileFooter.top + window.scrollY
+        : pFooter.top + window.scrollY;
 
       const triggerOffset = window.innerHeight * 0.35;
       const t0 = 0;
@@ -131,8 +214,13 @@ function App() {
       const t2 = Math.max(a2 - triggerOffset, t1 + 1);
       const t3 = Math.max(a3 - triggerOffset, t2 + 1);
       const t4 = Math.max(a4 - triggerOffset, t3 + 1);
-      const footerArriveOffset = 0;
-      const t5 = Math.max(a5 - footerArriveOffset, t4 + 1);
+      const maxScroll = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        0,
+      );
+      const t5 = isMobile
+        ? Math.max(a5, t4 + 1)
+        : Math.max(maxScroll, t4 + 1);
       const scroll = window.scrollY;
 
       const lerp = (a, b, t) => a + (b - a) * t;
@@ -175,26 +263,89 @@ function App() {
 
       const xDoc = lerp(from.x, to.x, t);
       const yDoc = lerp(from.y, to.y, t);
+      const reachedPageEnd = scroll >= maxScroll - 2;
+      const lockedToMobileFooter = isMobile && reachedPageEnd;
+      const finalX = lockedToMobileFooter ? c5.x : xDoc;
+      const finalY = lockedToMobileFooter ? c5.y : yDoc;
+      const finalStage = lockedToMobileFooter ? 5 : stage;
+      const finalT = lockedToMobileFooter ? 1 : t;
 
       setBallFlight({
-        x: xDoc,
-        y: yDoc - window.scrollY,
-        progress: (stage + t) / 5,
-        stage,
+        x: finalX,
+        y: finalY - window.scrollY,
+        progress: (finalStage + finalT) / 5,
+        stage: finalStage,
       });
+    };
+
+    const updatePFlight = () => {
+      if (!experienceSectionRef.current || !expPRef.current || !projectsPRef.current) return;
+
+      const expSectionRect = experienceSectionRef.current.getBoundingClientRect();
+      const sourceRect = expPRef.current.getBoundingClientRect();
+      const targetRect = projectsPRef.current.getBoundingClientRect();
+      const expSectionAbsY = expSectionRect.top + window.scrollY;
+      const targetAbsY = targetRect.top + window.scrollY;
+      const start = Math.max(expSectionAbsY, 0);
+      const end = Math.max(targetAbsY - window.innerHeight * 0.58, start + 1);
+      const raw = (window.scrollY - start) / (end - start);
+      const progress = Math.min(Math.max(raw, 0), 1);
+
+      const sourceX = sourceRect.left + sourceRect.width / 2;
+      const sourceY = sourceRect.top + sourceRect.height / 2;
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      const x = sourceX + (targetX - sourceX) * progress;
+      const y = sourceY + (targetY - sourceY) * progress;
+
+      setPFlight({ x, y, progress });
+    };
+
+    const updateProjectsMFlight = () => {
+      if (!projectsPRef.current || !projectsMRef.current || !contactMsgMRef.current) return;
+
+      const projectsSectionRect = projectsPRef.current.getBoundingClientRect();
+      const sourceRect = projectsMRef.current.getBoundingClientRect();
+      const targetRect = contactMsgMRef.current.getBoundingClientRect();
+      const projectsAbsY = projectsSectionRect.top + window.scrollY;
+      const targetAbsY = targetRect.top + window.scrollY;
+      const start = Math.max(projectsAbsY, 0);
+      const end = Math.max(targetAbsY - window.innerHeight * 0.58, start + 1);
+      const raw = (window.scrollY - start) / (end - start);
+      const progress = Math.min(Math.max(raw, 0), 1);
+
+      const sourceX = sourceRect.left + sourceRect.width / 2;
+      const sourceY = sourceRect.top + sourceRect.height / 2;
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      const x = sourceX + (targetX - sourceX) * progress;
+      const y = sourceY + (targetY - sourceY) * progress;
+
+      setProjectsMFlight({ x, y, progress });
     };
 
     updateYFlight();
     updateSFlight();
+    updateMFlight();
+    updatePFlight();
+    updateProjectsMFlight();
     updateBallFlight();
     const handleScroll = () => {
       updateYFlight();
       updateSFlight();
+      updateMFlight();
+      updatePFlight();
+      updateProjectsMFlight();
       updateBallFlight();
     };
     const handleResize = () => {
       updateYFlight();
       updateSFlight();
+      updateMFlight();
+      updatePFlight();
+      updateProjectsMFlight();
       updateBallFlight();
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -208,9 +359,14 @@ function App() {
 
   return (
     <div className="landing-root">
+      <div
+        className={`cursor-orange-glow ${cursorGlow.active ? 'is-active' : ''}`}
+        style={{ left: cursorGlow.x, top: cursorGlow.y }}
+        aria-hidden="true"
+      />
       <motion.div className="scroll-line" style={{ scaleX: progressX, transformOrigin: '0% 50%' }} />
 
-      <div className="page-shell">
+      <div id="home" className="page-shell">
         <motion.nav
           className="navbar"
           initial={{ y: -20, opacity: 0 }}
@@ -224,12 +380,14 @@ function App() {
             </span>
           </div>
           <div className="menu">
-            <a href="#about">About Me</a>
-            <a href="#services">Services</a>
-            <a href="#portfolio">Portfolio</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
           </div>
-          <button className="hire-btn">Hire Me!</button>
+          <a href="#contact" className="hire-btn">Hire Me!</a>
         </motion.nav>
 
         <main className="hero-grid">
@@ -255,8 +413,7 @@ function App() {
             <p className="degree">B.Tech in Computer Engineering</p>
 
             <div className="cta-wrap">
-              <button className="btn-main">Download CV</button>
-              <button className="btn-outline">My Work</button>
+              <a href="/LakshayResume.pdf" download className="btn-main">Download CV</a>
             </div>
           </motion.section>
 
@@ -308,6 +465,45 @@ function App() {
         S
       </motion.span>
 
+      <motion.span
+        className="flying-m"
+        style={{
+          left: mFlight.x,
+          top: mFlight.y,
+          opacity: mFlight.progress > 0.02 && mFlight.progress < 0.995 ? 1 : 0,
+          x: '-50%',
+          y: '-50%',
+        }}
+      >
+        M
+      </motion.span>
+
+      <motion.span
+        className="flying-p"
+        style={{
+          left: pFlight.x,
+          top: pFlight.y,
+          opacity: pFlight.progress > 0.02 && pFlight.progress < 0.995 ? 1 : 0,
+          x: '-50%',
+          y: '-50%',
+        }}
+      >
+        P
+      </motion.span>
+
+      <motion.span
+        className="flying-projects-m"
+        style={{
+          left: projectsMFlight.x,
+          top: projectsMFlight.y,
+          opacity: projectsMFlight.progress > 0.02 && projectsMFlight.progress < 0.995 ? 1 : 0,
+          x: '-50%',
+          y: '-50%',
+        }}
+      >
+        M
+      </motion.span>
+
       <motion.img
         src="/ball.png"
         alt=""
@@ -339,18 +535,35 @@ function App() {
         skillsSReady={sFlight.progress >= 0.995}
         skillsBallRef={skillsBallRef}
         skillsBallReady={ballFlight.stage >= 2}
+        skillsMRef={skillsMRef}
+        skillsMHidden={mFlight.progress > 0.02}
       />
       <Experience
         experienceSectionRef={experienceSectionRef}
         expBallRef={expBallRef}
         expBallReady={ballFlight.stage >= 3}
+        expMRef={expMRef}
+        expMReady={mFlight.progress >= 0.995}
+        expPRef={expPRef}
+        expPHidden={pFlight.progress > 0.02}
       />
-      <Projects projectsBallRef={projectsBallRef} projectsBallReady={ballFlight.stage >= 4} />
+      <Projects
+        projectsBallRef={projectsBallRef}
+        projectsBallReady={ballFlight.stage >= 4}
+        projectsPRef={projectsPRef}
+        projectsPReady={pFlight.progress >= 0.995}
+        projectsMRef={projectsMRef}
+        projectsMHidden={projectsMFlight.progress > 0.02}
+      />
       <ContactFooter
         contactBallRef={contactBallRef}
         contactBallReady={false}
         contactKRef={contactKRef}
+        contactMsgMRef={contactMsgMRef}
+        contactMsgMReady={projectsMFlight.progress >= 0.995}
         footerBallTargetRef={footerBallTargetRef}
+        mobileFooterBallTargetRef={mobileFooterBallTargetRef}
+        quickLinksColRef={quickLinksColRef}
       />
     </div>
   );

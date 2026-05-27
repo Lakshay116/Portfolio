@@ -37,6 +37,12 @@
   right: -12px;
   width: 28px;
   height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  display: block;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s ease;
   filter: drop-shadow(0 0 11px rgba(255, 90, 10, 0.32));
@@ -48,6 +54,25 @@
 
 .projects-title span {
   color: #ff5a0a;
+}
+
+.projects-title-m {
+  color: #f8f8f8;
+  transition: opacity 0.2s ease;
+}
+
+.projects-title-m.is-hidden {
+  opacity: 0;
+}
+
+.projects-title-p {
+  color: #ff5a0a;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.projects-title-p.is-visible {
+  opacity: 1;
 }
 
 .projects-subtitle {

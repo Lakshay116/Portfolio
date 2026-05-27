@@ -37,7 +37,15 @@ const experiences = [
   },
 ];
 
-function Experience({ experienceSectionRef, expBallRef, expBallReady }) {
+function Experience({
+  experienceSectionRef,
+  expBallRef,
+  expBallReady,
+  expMRef,
+  expMReady,
+  expPRef,
+  expPHidden,
+}) {
   return (
     <section id="experience" className="experience-section" ref={experienceSectionRef}>
       <div className="experience-shell">
@@ -76,7 +84,10 @@ function Experience({ experienceSectionRef, expBallRef, expBallReady }) {
                 aria-hidden="true"
                 className={`exp-ball ${expBallReady ? 'is-visible' : ''}`}
               />
-              My <span>Experience</span>
+              <span ref={expMRef} className={`exp-title-m ${expMReady ? 'is-visible' : ''}`}>M</span>y{' '}
+              <span>
+                Ex<span ref={expPRef} className={`exp-title-p ${expPHidden ? 'is-hidden' : ''}`}>p</span>erience
+              </span>
             </motion.h2>
             <p className="exp-subtitle">
               A journey of learning, building and delivering real-world solutions.

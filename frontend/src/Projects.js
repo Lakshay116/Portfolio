@@ -15,7 +15,7 @@ const projects = [
     slug: 'chatio',
     details: '/projects/chatio',
     live: 'https://chatio-bp7g.onrender.com/',
-    github: 'https://github.com/lakshyajangra394/chatio',
+    github: 'https://github.com/Lakshay116/ChatIO',
   },
   {
     icon: FaCar,
@@ -26,7 +26,7 @@ const projects = [
     slug: 'parking',
     details: '/projects/parking',
     live: 'https://parking-system-you.onrender.com/',
-    github: 'https://github.com/lakshyajangra394/parking-management-system',
+    github: 'https://github.com/lakshay394/parking_system',
   },
   {
     icon: FaDumbbell,
@@ -37,7 +37,7 @@ const projects = [
     slug: 'fitsync',
     details: '/projects/fitsync',
     live: 'https://fitsyncx-fe.onrender.com/',
-    github: 'https://github.com/lakshyajangra394/fitsyncx',
+    github: 'https://github.com/Lakshay116/FitSyncX_New',
   },
   {
     icon: FaFileInvoice,
@@ -48,11 +48,18 @@ const projects = [
     slug: 'billing',
     details: '/projects/billing',
     live: '',
-    github: 'https://github.com/lakshyajangra394/billing-system',
+    github: 'https://github.com/lakshay394/python_bill_mgmt',
   },
 ];
 
-function Projects({ projectsBallRef, projectsBallReady }) {
+function Projects({
+  projectsBallRef,
+  projectsBallReady,
+  projectsPRef,
+  projectsPReady,
+  projectsMRef,
+  projectsMHidden,
+}) {
   const navigate = useNavigate();
 
   return (
@@ -67,7 +74,8 @@ function Projects({ projectsBallRef, projectsBallReady }) {
             aria-hidden="true"
             className={`projects-ball ${projectsBallReady ? 'is-visible' : ''}`}
           />
-          My <span>Projects</span>
+          <span className={`projects-title-m ${projectsMHidden ? 'is-hidden' : ''}`} ref={projectsMRef}>M</span>y{' '}
+          <span><span ref={projectsPRef} className={`projects-title-p ${projectsPReady ? 'is-visible' : ''}`}>P</span>rojects</span>
         </h2>
         <p className="projects-subtitle">
           A showcase of real-world applications built with modern technologies to solve

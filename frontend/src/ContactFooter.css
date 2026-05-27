@@ -46,6 +46,12 @@
   right: -12px;
   width: 28px;
   height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  display: block;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s ease;
   filter: drop-shadow(0 0 12px rgba(255, 90, 10, 0.4));
@@ -97,6 +103,15 @@
 
 .contact-socials a {
   color: #ff8d2f;
+  text-decoration: none;
+}
+
+.hackerrank-text {
+  color: #ff8d2f;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
 }
 
 .contact-right {
@@ -116,6 +131,16 @@
 
 .contact-right h3 svg {
   color: #ff7a1c;
+}
+
+.contact-msg-m {
+  color: #ff7a1c;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.contact-msg-m.is-visible {
+  opacity: 1;
 }
 
 .contact-right form {
@@ -200,6 +225,20 @@
   color: #f3f3f3;
 }
 
+.quick-links-col {
+  position: relative;
+}
+
+.mobile-footer-ball-target {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+}
+
 .footer-grid p {
   margin: 0.65rem 0 0;
   color: #bdbdbd;
@@ -227,6 +266,7 @@
   border: 1px solid #2b2b2b;
   border-radius: 7px;
   color: #ff8d2f;
+  text-decoration: none;
 }
 
 .footer-grid button {

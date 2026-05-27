@@ -97,7 +97,15 @@ function SkillBar({ name, percent, icon: Icon, delay }) {
   );
 }
 
-function Skills({ skillsSectionRef, skillsSRef, skillsSReady, skillsBallRef, skillsBallReady }) {
+function Skills({
+  skillsSectionRef,
+  skillsSRef,
+  skillsSReady,
+  skillsBallRef,
+  skillsBallReady,
+  skillsMRef,
+  skillsMHidden,
+}) {
   return (
     <section id="skills" className="skills-section" ref={skillsSectionRef}>
       <motion.div
@@ -107,7 +115,10 @@ function Skills({ skillsSectionRef, skillsSRef, skillsSReady, skillsBallRef, ski
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.75, ease: 'easeOut' }}
       >
-        <p className="skills-eyebrow">My Expertise</p>
+        <p className="skills-eyebrow">
+          <span ref={skillsMRef} className={`skills-eyebrow-m ${skillsMHidden ? 'is-hidden' : ''}`}>M</span>
+          y Expertise
+        </p>
         <h2 className="skills-title">
           <img
             ref={skillsBallRef}
